@@ -11,3 +11,19 @@ $docker commit <container> <image> containerを指定してimageを作成
 $docker tag <source> <target> sourceのimagesをtargetに新しい名前を入れる
 $docker push <image> dockerHubにプッシュする(image名とdockerHubのrepository名を一致させる)
 $docker rmi <image> imageを削除
+
+$docker run <image> run=crate+ start
+$docker create <image>  
+$docker start -a <container>設定されたコマンドを出力
+$docker run -it ubuntu bash 
+-itとは、、、
+-i:インプット可能　
+-t:表示がきれいになる
+コンテナの削除
+$docker stop <container>
+$docker rm <contianer>
+コンテナの全削除
+$docker system prune
+
+--------------------------------------------------------------------------------------------------------
+Dockerfileの作成
