@@ -27,3 +27,13 @@ $docker system prune
 
 --------------------------------------------------------------------------------------------------------
 Dockerfileの作成
+FROM 土台となるosを指定
+RUN RUNのあとに書かれたコマンドを(Linuxで実行)、RUNごとにlayerが作成
+CMD
+実行
+$docker build <Dokerfileのあるディレクトリ>
+$docker run -it <nameを付ける> bash
+
+Dockerimageのlayer数を最小限にする。
+→Layerを作成するのはRUn,COPY,ADDの３つ
+→コマンドを&&でつなげる
