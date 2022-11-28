@@ -110,3 +110,11 @@ $get 取得したいファイルのパス 送信先のローカルpath
 SFTPのコマンド
 put リモートにファイルを送る
 get リモートサーバーからファイルを取得
+
+リモートサーバーでtarファイルをDocker imageに変換
+$docker load < myimage.tar
+
+ボリュームの増やし方
+
+aws上でユーザーの作成
+sudo adduser --uid <id> <name>
