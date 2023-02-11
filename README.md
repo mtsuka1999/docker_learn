@@ -1,32 +1,33 @@
-米国AI開発者がゼロから教えるDocker講座(https://www.udemy.com/course/aidocker/)の学習記録
-$docker login
-$docker pull <image>
-$docker run -it <image> bash imageからコンテナを作成してそのコンテナに入る
-$exit
-$docker ps -a 
-$docker images
-$docker restart コンテナをupにする
-$docker exec -it <container> bash コンテナを起動
-$docker commit <container> <image> containerを指定してimageを作成
-$docker tag <source> <target> sourceのimagesをtargetに新しい名前を入れる
-$docker push <image> dockerHubにプッシュする(image名とdockerHubのrepository名を一致させる)
-$docker rmi <image> imageを削除
+- 米国AI開発者がゼロから教えるDocker講座(https://www.udemy.com/course/aidocker/)の学習記録
+- $docker login
+- $docker pull <image>
+- $docker run -it <image> bash imageからコンテナを作成してそのコンテナに入る
+- $exit
+- $docker ps -a 
+- $docker images
+- $docker restart コンテナをupにする
+- $docker exec -it <container> bash コンテナを起動
+- $docker commit <container> <image> containerを指定してimageを作成
+- $docker tag <source> <target> sourceのimagesをtargetに新しい名前を入れる
+- $docker push <image> dockerHubにプッシ
+ュする(image名とdockerHubのrepository名を一致させる)
+- $docker rmi <image> imageを削除
 
-$docker run <image> run=crate+ start
-$docker create <image>  
-$docker start -a <container>設定されたコマンドを出力
-$docker run -it ubuntu bash 
+- $docker run <image> run=crate+ start
+- $docker create <image>  
+- $docker start -a <container>設定されたコマンドを出力
+- $docker run -it ubuntu bash 
 -itとは、、、
 -i:インプット可能　
 -t:表示がきれいになる
 コンテナの削除
-$docker stop <container>
-$docker rm <contianer>
+- $docker stop <container>
+- $docker rm <contianer>
 コンテナの全削除
-$docker system prune
+- $docker system prune
 
 --------------------------------------------------------------------------------------------------------
-Dockerfileの作成
+- Dockerfileの作成
 FROM 土台となるosを指定
 RUN RUNのあとに書かれたコマンドを(Linuxで実行)、RUNごとにlayerが作成
 CMD コンテナのデフォルトのコマンドを指定。
@@ -44,8 +45,8 @@ COPY test.txt/input_dir
 
 
 実行
-$docker build <Dokerfileのあるディレクトリ>
-$docker run -it <nameを付ける> bash
+- $docker build <Dokerfileのあるディレクトリ>
+- $docker run -it <nameを付ける> bash
 
 Dockerimageのlayer数を最小限にする。
 →Layerを作成するのはRUn,COPY,ADDの３つ
@@ -118,3 +119,39 @@ $docker load < myimage.tar
 
 aws上でユーザーの作成
 sudo adduser --uid <id> <name>
+
+-------------------------------------------------------------------------
+GPU付きのインスタンス
+$sudo apt-get update
+$sudo apt-get install docker.io
+$sudo snap install docker(これはNG)
+$sudo gpasswd -a ubuntu docker
+$docker --version (確認)
+
+https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html
+からpackpage installのubuntuを参照
+
+http://psychedelicnekopunch.com/archives/2738
+
+(今はこれを参考)
+https://qiita.com/Brutus/items/72d39c50b458e00925e9
+https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker
+https://hub.docker.com/r/nvidia/cuda
+
+$docker run --gpus all nvidia/cuda:9.0-base nvidia-smiを実行して確認
+docker: Error response from daemon: could not select device driver "" with capabilities: [[gpu]].
+解決　https://www.yurui-deep-learning.com/2021/08/17/docker-error-response-from-daemon-could-not-select-device-driver-with-capabilities-gpu/
+
+curl -s -L https://nvidia.github.io/nvidia-container-runtime/gpgkey | \
+  sudo apt-key add -
+distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+curl -s -L https://nvidia.github.io/nvidia-container-runtime/$distribution/nvidia-container-runtime.list | \
+  sudo tee /etc/apt/sources.list.d/nvidia-container-runtime.list
+sudo apt-get update
+sudo apt-get install nvidia-container-runtime
+
+
+$docker run --gpus all -v <マウンドしたいディレクトリのパス>:<そのディレクトリを入れるdockerコンテナのディレクトリの絶対パス> -p 8888:8888　<image>
+
+  追記
+  なぜかvscodeでインスタンスに入り、dockerコンテナを拡張機能でupにし、左クリックで[open in browser]をクリックすると行ける
